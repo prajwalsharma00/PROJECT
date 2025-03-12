@@ -1,0 +1,85 @@
+import 'package:flutter/material.dart';
+
+class HomePage extends StatelessWidget {
+  final List<String> tasks;
+
+  const HomePage({Key? key, required this.tasks}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('To-Do List'),
+      ),
+      body: tasks.isEmpty
+          ? Center(
+              child: Text(
+                'No tasks yet! Add some tasks to get started.',
+                style: TextStyle(fontSize: 18, color: Colors.grey),
+              ),
+            )
+          : ListView.builder(
+              itemCount: tasks.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  margin: const EdgeInsets.all(8.0),
+                  child: ListTile(
+                    title: Text(tasks[index]),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                      onPressed: () {
+                        // Implement task deletion logic
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigate to Add Task Page
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddTaskPage()),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class AddTaskPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final TextEditingController taskController = TextEditingController();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add New Task'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: taskController,
+              decoration: const InputDecoration(
+                labelText: 'Task Name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Add the new task to the list (logic to be implemented)
+                Navigator.pop(context, taskController.text);
+              },
+              child: const Text('Add Task'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
